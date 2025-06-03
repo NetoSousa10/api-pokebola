@@ -1,11 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, url_for
 from flasgger import Swagger, swag_from
 import random
 
 app = Flask(__name__)
 
 app.config['SWAGGER'] = {
-    'title': 'API de Pokébola – Atividade Swagger',
+    'title': 'API de Pokébola',
     'uiversion': 3,
     'definitions': {
         'CaptureResponse': {
@@ -25,6 +25,10 @@ app.config['SWAGGER'] = {
     }
 }
 Swagger(app)
+
+@app.route('/', methods=['GET'])
+def home():
+    return redirect(url_for('flasgger.apidocs'))
 
 POKEMONS = [
     "Pikachu",
