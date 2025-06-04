@@ -67,7 +67,6 @@ next_id = 1
 def list_pokemons():
     return jsonify(pokemons), 200
 
-
 @app.route('/pokemons/<int:pokemon_id>', methods=['GET'])
 @swag_from({
     'tags': ['Pokemons'],
@@ -97,7 +96,6 @@ def get_pokemon(pokemon_id):
         if p['id'] == pokemon_id:
             return jsonify(p), 200
     return jsonify({'erro': 'Pokémon não encontrado'}), 404
-
 
 @app.route('/pokemons', methods=['POST'])
 @swag_from({
@@ -137,7 +135,6 @@ def create_pokemon():
     pokemons.append(novo)
     next_id += 1
     return jsonify(novo), 201
-
 
 @app.route('/pokemons/<int:pokemon_id>', methods=['PUT'])
 @swag_from({
@@ -185,7 +182,6 @@ def update_pokemon(pokemon_id):
             return jsonify(p), 200
     return jsonify({'erro': 'Pokémon não encontrado'}), 404
 
-
 @app.route('/pokemons/<int:pokemon_id>', methods=['DELETE'])
 @swag_from({
     'tags': ['Pokemons'],
@@ -213,7 +209,6 @@ def delete_pokemon(pokemon_id):
             pokemons.pop(i)
             return '', 204
     return jsonify({'erro': 'Pokémon não encontrado'}), 404
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
