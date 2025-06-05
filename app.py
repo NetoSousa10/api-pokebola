@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, redirect, url_for
 from flasgger import Swagger, swag_from
 import random
 
+
 app = Flask(__name__)
 app.config['SWAGGER'] = {
     'title': 'API de Pokébola',
@@ -39,6 +40,7 @@ app.config['SWAGGER'] = {
 }
 Swagger(app)
 
+
 @app.route('/', methods=['GET'])
 def home():
     return redirect(url_for('flasgger.apidocs'))
@@ -56,7 +58,9 @@ next_id = 1
             'description': 'Lista todos os pokemons',
             'schema': {
                 'type': 'array',
-                'items': {'$ref': '#/definitions/Pokemon'}
+                'items': {
+                    '$ref': '#/definitions/Pokemon'
+                }
             }
         }
     }
@@ -80,9 +84,13 @@ def list_pokemons():
     'responses': {
         200: {
             'description': 'Retorna um pokemon pelo ID',
-            'schema': {'$ref': '#/definitions/Pokemon'}
+            'schema': {
+                '$ref': '#/definitions/Pokemon'
+            }
         },
-        404: {'description': 'Pokemon não encontrado'}
+        404: {
+            'description': 'Pokemon não encontrado'
+        }
     }
 })
 def get_pokemon(pokemon_id):
@@ -100,15 +108,21 @@ def get_pokemon(pokemon_id):
             'name': 'body',
             'in': 'body',
             'required': True,
-            'schema': {'$ref': '#/definitions/PokemonInput'}
+            'schema': {
+                '$ref': '#/definitions/PokemonInput'
+            }
         }
     ],
     'responses': {
         201: {
             'description': 'Pokemon criado com sucesso',
-            'schema': {'$ref': '#/definitions/Pokemon'}
+            'schema': {
+                '$ref': '#/definitions/Pokemon'
+            }
         },
-        400: {'description': 'Campo name é obrigatório'}
+        400: {
+            'description': 'Campo name é obrigatório'
+        }
     }
 })
 def create_pokemon():
@@ -120,7 +134,7 @@ def create_pokemon():
     novo = {
         'id': next_id,
         'name': dados['name'],
-        'captured': False 
+        'captured': False
     }
     pokemons.append(novo)
     next_id += 1
@@ -145,8 +159,14 @@ def create_pokemon():
             'schema': {
                 'type': 'object',
                 'properties': {
-                    'name': {'type': 'string', 'example': 'Charmander'},
-                    'captured': {'type': 'boolean', 'example': False}
+                    'name': {
+                        'type': 'string',
+                        'example': 'Charmander'
+                    },
+                    'captured': {
+                        'type': 'boolean',
+                        'example': False
+                    }
                 },
                 'required': ['name', 'captured']
             }
@@ -155,10 +175,16 @@ def create_pokemon():
     'responses': {
         200: {
             'description': 'Pokemon atualizado com sucesso',
-            'schema': {'$ref': '#/definitions/Pokemon'}
+            'schema': {
+                '$ref': '#/definitions/Pokemon'
+            }
         },
-        400: {'description': 'Campos name e captured obrigatórios'},
-        404: {'description': 'Pokemon não encontrado'}
+        400: {
+            'description': 'Campos name e captured obrigatórios'
+        },
+        404: {
+            'description': 'Pokemon não encontrado'
+        }
     }
 })
 def update_pokemon(pokemon_id):
@@ -187,8 +213,12 @@ def update_pokemon(pokemon_id):
         }
     ],
     'responses': {
-        204: {'description': 'Pokemon deletado com sucesso'},
-        404: {'description': 'Pokemon não encontrado'}
+        204: {
+            'description': 'Pokemon deletado com sucesso'
+        },
+        404: {
+            'description': 'Pokemon não encontrado'
+        }
     }
 })
 def delete_pokemon(pokemon_id):
@@ -214,9 +244,13 @@ def delete_pokemon(pokemon_id):
     'responses': {
         200: {
             'description': 'Resultado da tentativa de captura',
-            'schema': {'$ref': '#/definitions/Pokemon'}
+            'schema': {
+                '$ref': '#/definitions/Pokemon'
+            }
         },
-        404: {'description': 'Pokemon não encontrado'}
+        404: {
+            'description': 'Pokemon não encontrado'
+        }
     }
 })
 def capture_pokemon(pokemon_id):
