@@ -1,30 +1,22 @@
-import pytest
-import app as pokebola_app
-from app import app
-
-
-@pytest.fixture
-def client():
-    pokebola_app.pokemons.clear()
-    pokebola_app.next_id = 1
-    pokebola_app.app.testing = True
-    with pokebola_app.app.test_client() as client:
-        yield client
-
 
 def test_capture_changes_state(client):
-    client.post("/pokemons", json={"name": "Charmander"})
+    # Cria um Pokémon (criado com JWT)
+    resp = client.post('/pokemons', json={'name': 'Charmander'})
+    assert resp.status_code == 201
 
     resultados = set()
     for _ in range(5):
-        response = client.get("/capture/1")
+        response = client.get('/capture/1')
         assert response.status_code == 200
         data = response.get_json()
-        assert "captured" in data
-        resultados.add(data["captured"])
+        assert 'captured' in data
+        resultados.add(data['captured'])
 
+    # Deve ter aparecido True e False
     assert True in resultados
     assert False in resultados
 
-    response = client.get("/capture/99")
+
+def test_capture_invalid_id(client):
+    response = client.get('/capture/999')
     assert response.status_code == 404

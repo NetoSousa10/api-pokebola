@@ -1,18 +1,7 @@
-import pytest
-import app as pokebola_app
-from app import app
-
-
-@pytest.fixture
-def client():
-    pokebola_app.pokemons.clear()
-    pokebola_app.next_id = 1
-    pokebola_app.app.testing = True
-    with pokebola_app.app.test_client() as client:
-        yield client
-
+# tests/test_pokemons_crud.py
 
 def test_create_and_list_pokemon(client):
+    # Agora client já tem o header Authorization
     response = client.post("/pokemons", json={"name": "Charmander"})
     assert response.status_code == 201
     data = response.get_json()
@@ -46,13 +35,17 @@ def test_get_pokemon_by_id(client):
 def test_update_pokemon(client):
     client.post("/pokemons", json={"name": "Pikachu"})
 
-    response = client.put("/pokemons/1", json={"name": "Raichu", "captured": True})
+    response = client.put(
+        "/pokemons/1", json={"name": "Raichu", "captured": True}
+    )
     assert response.status_code == 200
     data = response.get_json()
     assert data["name"] == "Raichu"
     assert data["captured"] is True
 
-    response = client.put("/pokemons/99", json={"name": "Mew", "captured": False})
+    response = client.put(
+        "/pokemons/99", json={"name": "Mew", "captured": False}
+    )
     assert response.status_code == 404
 
 
